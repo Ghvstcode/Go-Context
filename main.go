@@ -25,7 +25,36 @@
 // 	fmt.Print("Ooooops, unable to find the context value")
 // }
 
-//EXAMPLE 2
+////EXAMPLE 2
+//
+//package main
+//
+//import (
+//	"fmt"
+//	"context"
+//	"time"
+//)
+//
+//func main() {
+//	ctx := context.Background()
+//	ctx, cancel := context.WithCancel(ctx)
+//
+//	time.AfterFunc(2*time.Second, cancel)
+//
+//	sayMyName(ctx, 5*time.Second, "Toby")
+//}
+//
+//func sayMyName(ctx context.Context, d time.Duration, name string){
+//	select {
+//	case <- time.After(d):
+//		fmt.Print("Your name is ", name)
+//	case <-ctx.Done():
+//		err := ctx.Err()
+//        fmt.Print(err)
+//	}
+//}
+
+//EXAMPLE 3
 
 package main
 
@@ -37,9 +66,8 @@ import (
 
 func main() {
 	ctx := context.Background()
-	ctx, cancel := context.WithCancel(ctx)
-	
-	time.AfterFunc(2*time.Second, cancel)
+	ctx, cancel := context.WithTimeout(ctx, 2*time.Second)
+	cancel()
 
 	sayMyName(ctx, 5*time.Second, "Toby")
 }
@@ -50,6 +78,6 @@ func sayMyName(ctx context.Context, d time.Duration, name string){
 		fmt.Print("Your name is ", name)
 	case <-ctx.Done():
 		err := ctx.Err()
-        fmt.Print(err)
+		fmt.Print(err)
 	}
 }
