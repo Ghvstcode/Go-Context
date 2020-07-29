@@ -67,7 +67,7 @@ import (
 func main() {
 	ctx := context.Background()
 	ctx, cancel := context.WithTimeout(ctx, 2*time.Second)
-	cancel()
+	defer cancel()
 
 	sayMyName(ctx, 5*time.Second, "Toby")
 }
